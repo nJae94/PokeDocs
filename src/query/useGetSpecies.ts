@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 import { useQuery } from "react-query";
 import { SpeciesResponse } from "../types";
 
@@ -10,13 +10,16 @@ const speciesApi = async (id?: string) => {
   return result.data;
 };
 
-const useGetSpecies = (id?: string) =>
-  useQuery<AxiosResponse<SpeciesResponse>, Error>(
+const useGetSpecies = (id?: string) => {
+  const { data, isError, isLoading } = useQuery<SpeciesResponse, Error>(
     ["species", { id }],
     () => speciesApi(id),
     {
       enabled: !!id,
     }
   );
+
+  return { data, isLoading, isError };
+};
 
 export default useGetSpecies;

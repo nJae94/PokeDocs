@@ -1,4 +1,4 @@
-import styled from "@emotion/styled";
+import styled from "@emotion/styled/macro";
 
 export const Wrapper = styled.article`
   padding: 20px;
@@ -73,7 +73,6 @@ export const InfoContainer = styled.div`
 
 export const InfoItem = styled.div`
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
 `;
 
 export const InfoItemLabel = styled.span`

@@ -1,16 +1,20 @@
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 import { useQuery, UseQueryResult } from "react-query";
 
-const getPokemon = (id?: string) =>
-  axios.get(`https://pokeapi.co/api/v2/pokemon/${id || ""}`, {
-    params: {
-      limit: 151,
-    },
-  });
+const getPokemon = async (id?: string) => {
+  const response = await axios.get(
+    `https://pokeapi.co/api/v2/pokemon/${id || ""}`,
+    {
+      params: {
+        limit: 151,
+      },
+    }
+  );
 
-const useGetPokemon = <T>(
-  id?: string
-): UseQueryResult<AxiosResponse<T>, Error> => {
+  return response.data;
+};
+
+const useGetPokemon = <T>(id?: string): UseQueryResult<T, Error> => {
   return useQuery(id ? ["pokemon", id] : "pokemon", () => getPokemon(id));
 };
 

@@ -24,16 +24,17 @@ const PokeList = () => {
         </LoadingWrapper>
       ) : (
         <List>
-          {data?.data.results.map((pokemon, index) => (
-            <ListItem
-              key={pokemon.name}
-              onClick={() => navigate(`/detail/${index + 1}`)}
-            >
-              <Image src={getImageUrl(index + 1)} alt={pokemon.name} />
-              <Name>{pokemon.name}</Name>
-              <Number>{formatNumbering(index + 1)}</Number>
-            </ListItem>
-          ))}
+          {data &&
+            data.results.map((pokemon, index) => (
+              <ListItem
+                key={pokemon.name}
+                onClick={() => navigate(`/detail/${index + 1}`)}
+              >
+                <Image src={getImageUrl(index + 1)} alt={pokemon.name} />
+                <Name>{pokemon.name}</Name>
+                <Number>{formatNumbering(index + 1)}</Number>
+              </ListItem>
+            ))}
         </List>
       )}
     </Wrapper>

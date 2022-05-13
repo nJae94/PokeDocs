@@ -1,4 +1,4 @@
-import styled from "@emotion/styled";
+import styled from "@emotion/styled/macro";
 import { mapColorToHex } from "../utils";
 import { Ability, Color } from "../types";
 
@@ -8,15 +8,16 @@ interface AbilitiesProps {
 }
 
 function Abilities({ abilities, color }: AbilitiesProps) {
-  console.log(abilities);
   return (
     <Wrapper>
       <Title color={mapColorToHex(color?.name)}>Abilities</Title>
       <List>
-        <ListItem>
-          <Label>Label</Label>
-          <Description>Description</Description>
-        </ListItem>
+        {abilities.map((item) => (
+          <ListItem>
+            <Label>{item.ability.name}</Label>
+            <Description>Description</Description>
+          </ListItem>
+        ))}
       </List>
     </Wrapper>
   );

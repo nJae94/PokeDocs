@@ -1,4 +1,4 @@
-import styled from "@emotion/styled";
+import styled from "@emotion/styled/macro";
 
 export const Wapper = styled.div<{ color?: string }>`
   display: flex;
