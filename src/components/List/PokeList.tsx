@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import { useNavigate } from "react-router-dom";
 import useGetPokemon from "../../query/useGetPokeList";
 import { ListResponse } from "../../types";
 
@@ -13,6 +14,7 @@ const formatNumbering = (pokemonIndex: number | string): string =>
 
 const PokeList = () => {
   const { data, isLoading, isError } = useGetPokemon<ListResponse>();
+  const navigate = useNavigate();
 
   return (
     <Wrapper>
@@ -23,7 +25,10 @@ const PokeList = () => {
       ) : (
         <List>
           {data?.data.results.map((pokemon, index) => (
-            <ListItem key={pokemon.name}>
+            <ListItem
+              key={pokemon.name}
+              onClick={() => navigate(`/detail/${index + 1}`)}
+            >
               <Image src={getImageUrl(index + 1)} alt={pokemon.name} />
               <Name>{pokemon.name}</Name>
               <Number>{formatNumbering(index + 1)}</Number>
