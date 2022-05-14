@@ -1,6 +1,8 @@
 import styled from "@emotion/styled/macro";
 import { mapColorToHex } from "../utils";
-import { Ability, Color } from "../types";
+import { Ability, Color, EffectEntry } from "../types";
+import useGetAbilites from "../query/useGetAbilities";
+import { useCallback } from "react";
 
 interface AbilitiesProps {
   abilities: Ability[];
@@ -8,16 +10,33 @@ interface AbilitiesProps {
 }
 
 function Abilities({ abilities, color }: AbilitiesProps) {
+  const abilitesList = useGetAbilites(abilities);
+
+  const getEffectEntry = useCallback((effectEntries: Array<EffectEntry>) => {
+    if (effectEntries.length > 0) {
+      return (
+        effectEntries.find(
+          (effectEntry) => effectEntry.language.name === "en"
+        ) || effectEntries[0]
+      );
+    }
+    return { effect: "" };
+  }, []);
+
   return (
     <Wrapper>
       <Title color={mapColorToHex(color?.name)}>Abilities</Title>
       <List>
-        {abilities.map((item) => (
-          <ListItem>
-            <Label>{item.ability.name}</Label>
-            <Description>Description</Description>
-          </ListItem>
-        ))}
+        {abilitesList.map(({ data }, index) => {
+          return (
+            <ListItem key={index}>
+              <Label>{data?.data.name}</Label>
+              <Description>
+                {getEffectEntry(data?.data.effect_entries || []).effect}
+              </Description>
+            </ListItem>
+          );
+        })}
       </List>
     </Wrapper>
   );
