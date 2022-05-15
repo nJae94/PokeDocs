@@ -1,16 +1,26 @@
 import styled from "@emotion/styled";
+import useGetPokemons from "../query/useGetPokemons";
 import { Color } from "../types";
 import { mapColorToHex } from "../utils";
 
 interface EvolutionStageProps {
   level: number;
   color?: Color;
+  from: { name: string; url: string };
+  to: { name: string; url: string };
 }
-function EvolutionStage({ level, color }: EvolutionStageProps) {
+function EvolutionStage({ level, color, from, to }: EvolutionStageProps) {
+  const [prev, next] = useGetPokemons([from.name, to.name]);
+
   return (
     <Wrapper>
       <ImageWrapper>
-        <Image src={""} />
+        <Image
+          src={
+            prev.data &&
+            prev.data.sprites.other["official-artwork"].front_default
+          }
+        />
       </ImageWrapper>
       <DividerWrapper>
         {level && (
@@ -19,7 +29,12 @@ function EvolutionStage({ level, color }: EvolutionStageProps) {
         <Divider />
       </DividerWrapper>
       <ImageWrapper>
-        <Image src={""} />
+        <Image
+          src={
+            next.data &&
+            next.data.sprites.other["official-artwork"].front_default
+          }
+        />
       </ImageWrapper>
     </Wrapper>
   );

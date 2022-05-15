@@ -7,6 +7,8 @@ import Tabs from "../components/Tabs";
 import useGetPokemon from "../query/useGetPokeList";
 import { PokemonResponse } from "../types";
 import About from "../components/About";
+import Stats from "../components/Stats";
+import Evolution from "../components/Evolution";
 
 type Params = {
   id: string;
@@ -95,6 +97,16 @@ const DetailPage = () => {
             abilities={abilities}
             genderRate={genderRate}
           />
+        )}
+        {selectedTab === "stats" && (
+          <Stats
+            isLoading={speciesLoading || infoLoading}
+            color={color}
+            stats={stats}
+          />
+        )}
+        {selectedTab === "evolution" && (
+          <Evolution id={id} color={color} url={evolutionChainUrl} />
         )}
       </TabsWrapper>
     </Container>

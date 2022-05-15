@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useQuery, UseQueryResult } from "react-query";
 
-const getPokemon = async (id?: string) => {
+export const getPokemon = async (id?: string) => {
   const response = await axios.get(
     `https://pokeapi.co/api/v2/pokemon/${id || ""}`,
     {

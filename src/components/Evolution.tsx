@@ -1,17 +1,17 @@
-import styled from "@emotion/styled";
+import styled from "@emotion/styled/macro";
 import { useEffect, useState } from "react";
+import useGetEvolutionChain from "../query/useGetEvolutionChain";
 import { Chain, Color } from "../types";
 import { mapColorToHex } from "../utils";
 import EvolutionStage from "./EvolutionStage";
 
 interface EvolutionProps {
-  isLoading: boolean;
   id?: string;
   color?: Color;
   url?: string;
 }
 
-function Evolution({ url, color, isLoading }: EvolutionProps) {
+function Evolution({ url, color }: EvolutionProps) {
   const [evolutionChain, setEvolutionChain] = useState<
     Array<{
       from: { name: string; url: string };
@@ -19,6 +19,7 @@ function Evolution({ url, color, isLoading }: EvolutionProps) {
       level: number;
     }>
   >([]);
+  const { isSuccess, isError, isLoading, data } = useGetEvolutionChain(url);
 
   useEffect(() => {
     const makeEvolutionChain = (chain: Chain) => {
@@ -35,22 +36,30 @@ function Evolution({ url, color, isLoading }: EvolutionProps) {
       }
     };
 
+    isSuccess && data && makeEvolutionChain(data.data.chain);
+
     return (): void => {
       setEvolutionChain([]);
     };
-  }, []);
+  }, [data, isSuccess]);
 
   return (
     <Wrapper>
       <Title color={mapColorToHex(color?.name)}>Evolution</Title>
-      {isLoading ? (
+      {isLoading || isError ? (
         <ImageWrapper>
           <Image src="/loading.gif" />
         </ImageWrapper>
       ) : evolutionChain.length ? (
         <List>
-          {evolutionChain.map(({ level }, idx) => (
-            <EvolutionStage key={idx} level={level} color={color} />
+          {evolutionChain.map(({ level, from, to }, idx) => (
+            <EvolutionStage
+              key={idx}
+              from={from}
+              to={to}
+              level={level}
+              color={color}
+            />
           ))}
         </List>
       ) : (
